@@ -27,60 +27,85 @@ function operate(firstNumber, operator, secondNumber){
     if (operator == "+") {
 
         operationsDisplay.textContent = `${firstNumber}${operator}${secondNumber}`
-        return results.textContent =  Number(firstNumber) + Number(secondNumber);
+        return results.textContent =  Math.round((Number(firstNumber) + Number(secondNumber))*100)/100;
 
     } else if (operator == "-") {
 
         operationsDisplay.textContent = `${firstNumber}${operator}${secondNumber}`
-        return results.textContent =  Number(firstNumber) - Number(secondNumber);
+        return results.textContent =  Math.round((Number(firstNumber) - Number(secondNumber))*100)/100;
 
     } else if (operator == "x") {
 
         operationsDisplay.textContent = `${firstNumber}${operator}${secondNumber}`
-        return results.textContent =  Number(firstNumber) * Number(secondNumber);
+        return results.textContent =  Math.round((Number(firstNumber) * Number(secondNumber))*100)/100;
 
     } else if (operator == "÷") {
 
         operationsDisplay.textContent = `${firstNumber}${operator}${secondNumber}`
-        return results.textContent =  Number(firstNumber) / Number(secondNumber);
+        return results.textContent =  Math.round((Number(firstNumber) / Number(secondNumber))*100)/100;
 
-    } 
-    //return results.textContent = `${firstNumber}${operator}${secondNumber}`
+    } else if (operator == "÷" && secondNumber === 0) {
+        results.textContent = "xd?"
+    }
+    operator = "";
 }
 function setNumbers(){
     firstNumber = results.textContent;
     results.textContent = "";
     operationsDisplay.textContent = firstNumber
 }
-
+function severalOperators(){
+    if (operator != "") {
+        secondNumber = results.textContent;
+        results.textContent = "";
+        operate(firstNumber, operator, secondNumber);
+    }
+}
 //Set the operators
 plus.addEventListener("click", () => {
-    
+    severalOperators();
     setNumbers();
     operator = "+";
+    dot.disabled = false;
 })
 minus.addEventListener("click", () => {
+    severalOperators();
     setNumbers();
-    operator = "-"
+    operator = "-";
+    dot.disabled = false;
 })
 multiply.addEventListener("click", () => {
+    severalOperators();
     setNumbers();
-    operator = "x"
+    operator = "x";
+    dot.disabled = false;
 })
 divide.addEventListener("click", () => {
+    severalOperators();
     setNumbers();
-    operator = "÷"
+    operator = "÷";
+    dot.disabled = false;
 })
 equals.addEventListener("click", () => {
     secondNumber = results.textContent;
     results.textContent = "";
     operate(firstNumber, operator, secondNumber);
+    operator = "";
+    dot.disabled = false;
 })
 
-//Set the clear button
+//Clear button should remove all the current data
 clear.addEventListener("click", () =>{
     results.textContent = "";
     operationsDisplay.textContent = "";
+    firstNumber = "";
+    secondNumber = "";
+    operator = "";
+    dot.disabled = false;
+})
+//Backspace reduces the string in the display bar by 1
+backspace.addEventListener("click", () => {
+    results.textContent = results.textContent.substring(0, results.textContent.length - 1);
 })
 //Set the numbers to appear into the display box
 one.addEventListener("click", () =>{
@@ -112,4 +137,8 @@ nine.addEventListener("click", () =>{
 });
 zero.addEventListener("click", () =>{
     results.textContent += '0';
+});
+dot.addEventListener("click", () =>{
+    results.textContent += '.';
+    dot.disabled = true;
 });
